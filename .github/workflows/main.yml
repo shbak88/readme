@@ -1,8 +1,11 @@
 on:
   push:
-    branches: [ main ]
+    branches: 
+        - main
 jobs:
   build:
-    runs-on: window
+    runs-on: ubuntu-latest
     steps:
-      - run: rdme openapi --github
+      - run: npm install rdme@latest -g
+            rdme openapi --github --version=v1.0 \
+            --key=${{secrets.README_KEY}}
