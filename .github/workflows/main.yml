@@ -1,0 +1,8 @@
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: window
+    steps:
+      - run: ./build_server.sh
