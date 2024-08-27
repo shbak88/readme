@@ -29,3 +29,16 @@ jobs:
 
     - name: Publish OpenAPI to ReadMe
       run: rdme openapi --github --key=${{ secrets.README_KEY }} # ReadMe API key를 GitHub Secrets에서 가져옵니다.
+
+    - name: Loop through files and run command
+      run: |
+        # For 루프를 사용하여 scripts 디렉터리에 있는 모든 파일에 대해 반복 작업 수행
+        for file in src/openapi/*; do
+          echo "Processing $file"
+          # 예시 명령어 실행 - 파일명 출력 (원하는 명령어로 변경 가능)
+          rdme openapi "$file" --key ${{ secrets.README_KEY }}
+        done
+      env:
+        README_API_KEY: ${{ secrets.README_KEY }}
+
+        
