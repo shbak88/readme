@@ -1,1 +1,0 @@
-rdme openapi --github
