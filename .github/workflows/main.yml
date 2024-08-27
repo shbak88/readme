@@ -28,4 +28,4 @@ jobs:
       run: npm run build
 
     - name: Publish OpenAPI to ReadMe
-      run: rdme openapi --key=${{ secrets.README_KEY }} # ReadMe API key를 GitHub Secrets에서 가져옵니다.
+      run: rdme openapi --github --key=${{ secrets.README_KEY }} # ReadMe API key를 GitHub Secrets에서 가져옵니다.
