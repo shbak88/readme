@@ -1,11 +1,29 @@
+name: Run npm commands on push to master
+
 on:
   push:
-    branches: 
-        - main
+    branches:
+      - master
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - run: npm install rdme@latest -g
-            rdme openapi --github --version=v1.0 \
-            --key=${{secrets.README_KEY}}
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16' # 사용하고자 하는 Node.js 버전을 설정합니다. (예: 14, 16, 18 등)
+
+    - name: Install dependencies
+      run: npm install
+           rdme openapi --github --version=v1.0 \
+           --key=${{secrets.README_KEY}}
+
+    - name: Run build script
+      run: npm run build
+           rdme openapi --github --version=v1.0 \
+           --key=${{secrets.README_KEY}}
