@@ -5,4 +5,4 @@ jobs:
   build:
     runs-on: window
     steps:
-      - run: ./build_server.sh
+      - run: rdme openapi --github
