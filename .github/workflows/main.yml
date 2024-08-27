@@ -20,10 +20,14 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-           rdme openapi --github --version=v1.0 \
-           --key=${{secrets.README_KEY}}
 
     - name: Run build script
       run: npm run build
-           rdme openapi --github --version=v1.0 \
-           --key=${{secrets.README_KEY}}
+
+    - name: Install rdme CLI
+      run: npm install -g rdme
+
+    - name: Publish OpenAPI to ReadMe
+      run: rdme openapi --github
+      env:
+        README_API_KEY: ${{ secrets.README_KEY }} # ReadMe API key를 GitHub Secrets에서 가져옵니다.
