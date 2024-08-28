@@ -30,8 +30,8 @@ jobs:
     - name: Publish OpenAPI to ReadMe
       run: |
         # For 루프를 사용하여 scripts 디렉터리에 있는 모든 파일에 대해 반복 작업 수행
-        for $file in src/openapi/*; do
-          echo "Do something with file ${i}"
+        for file in src/openapi/*; do
+          echo "Do something with file ${file}"
           rdme openapi "$file" --key ${{ secrets.README_KEY }}
         done  
       env:
