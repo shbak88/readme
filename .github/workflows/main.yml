@@ -36,7 +36,7 @@ jobs:
         for file in src/openapi/*; do
           echo "Processing $file"
           # 예시 명령어 실행 - 파일명 출력 (원하는 명령어로 변경 가능)
-          rdme openapi "$file" --key ${{ secrets.README_KEY }}
+          # rdme openapi "$file" --key ${{ secrets.README_KEY }}
         done
       env:
         README_API_KEY: ${{ secrets.README_KEY }}
