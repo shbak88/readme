@@ -46,11 +46,17 @@ jobs:
 
     - name: check push list
       run: 
-        # 변경된 파일 목록에서 src/openapi 폴더 내의 파일만 추출
-        echo $(git diff --name-only origin/master | grep "^src/openapi/")
-        # for (file in Get-ChildItem $(git diff --name-only origin/master | grep "^src/openapi/")) {
-        #     echo $file
-        # }
+        # PowerShell에서 Git 명령을 실행하여 변경된 파일 목록을 가져옵니다.
+        $changedFiles = git diff --name-only origin/master
         
+        # 결과 출력
+        Write-Output "Changed files:"
+        Write-Output $changedFiles
+        
+        # 변경된 파일 목록 중 'src/openapi' 경로에 있는 파일만 필터링
+        $openapiFiles = $changedFiles | Where-Object { $_ -like "src/openapi/*" }
+        
+        # 결과 출력
+        Write-Output "Files in src/openapi directory:"
+        Write-Output $openapiFiles
 
-        
