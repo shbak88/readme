@@ -38,8 +38,9 @@ jobs:
         # For 루프를 사용하여 scripts 디렉터리에 있는 모든 파일에 대해 반복 작업 수행
         $files = Get-ChildItem -Path "src/openapi/*"
         foreach ($file in $files) {
-            echo "https://github.com/shbak88/readme/blob/master/src/openapi/${file}" test!!
-            # rdme openapi {https://github.com/shbak88/readme/blob/master/src/openapi/}$file.Name --key $env:README_API_KEY --update
+            filename=$(basename "$file")
+            echo "https://github.com/shbak88/readme/blob/master/src/openapi/${filename}" test!!
+            # rdme openapi "https://github.com/shbak88/readme/blob/master/src/openapi/${filename}" --key $env:README_API_KEY --update
         }
       env:
         README_API_KEY: ${{ secrets.README_KEY }}
