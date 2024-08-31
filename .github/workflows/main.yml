@@ -39,7 +39,7 @@ jobs:
         $files = Get-ChildItem -Path "src/openapi/*"
         for file in $files; do
             filename=$(basename "$file")
-            echo "https://github.com/shbak88/readme/blob/master/src/openapi/${filename} test!!"
+            echo "https://github.com/shbak88/readme/blob/master/src/openapi/${filename}" test!!"
             
             # Assuming README_API_KEY is set in the environment
             # rdme openapi "https://github.com/shbak88/readme/blob/master/src/openapi/${filename}" --key "${README_API_KEY}" --update
