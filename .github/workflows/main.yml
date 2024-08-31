@@ -47,8 +47,8 @@ jobs:
     - name: check push list
       run: 
         # 변경된 파일 목록에서 src/openapi 폴더 내의 파일만 추출
-        for (file in $(git diff --name-only origin/master | grep "^src/openapi/")) {
-            filename=$(basename "$file")
+        for (file in Get-ChildItem $(git diff --name-only origin/master | grep "^src/openapi/")) {
+            filename = Get-Item $(basename "$file")
             echo "$filename"
         }
         
