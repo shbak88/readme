@@ -39,7 +39,7 @@ jobs:
             # echo "https://github.com/shbak88/readme/blob/master/src/openapi/$filename"  test!!
             
             # Assuming README_API_KEY is set in the environment
-            rdme openapi "https://github.com/shbak88/readme/blob/master/src/openapi/$filename" --key $env:README_API_KEY --update
+            rdme openapi "https://github.com/shbak88/readme/blob/master/src/openapi/$filename" --key $env:README_API_KEY --github
         }
       env:
         README_API_KEY: ${{ secrets.README_KEY }}
