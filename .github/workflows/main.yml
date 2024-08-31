@@ -13,35 +13,47 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16' # 사용하고자 하는 Node.js 버전을 설정합니다. (예: 14, 16, 18 등)
+    # - name: Set up Node.js
+    #   uses: actions/setup-node@v3
+    #   with:
+    #     node-version: '16' # 사용하고자 하는 Node.js 버전을 설정합니다. (예: 14, 16, 18 등)
     
-    - name: Install rdme CLI
-      run: npm install -g rdme
+    # - name: Install rdme CLI
+    #   run: npm install -g rdme
       
-    - name: Install dependencies
-      run: npm install
+    # - name: Install dependencies
+    #   run: npm install
 
-    - name: Run build script
-      run: npm run build
+    # - name: Run build script
+    #   run: npm run build
 
-    - name: Publish OpenAPI to ReadMe
-      run: |
-        # For 루프를 사용하여 scripts 디렉터리에 있는 모든 파일에 대해 반복 작업 수행
-        $files = Get-ChildItem -Path "src/openapi/*"
-        foreach ($file in $files) {
-            # Extract the filename from the full path
-            $filename = [System.IO.Path]::GetFileName($file)
+    # - name: Publish OpenAPI to ReadMe
+    #   run: |
+    #     # For 루프를 사용하여 scripts 디렉터리에 있는 모든 파일에 대해 반복 작업 수행
+    #     $files = Get-ChildItem -Path "src/openapi/*"
+    #     foreach ($file in $files) {
+    #         # Extract the filename from the full path
+    #         $filename = [System.IO.Path]::GetFileName($file)
             
-            # Output the GitHub URL for the file
-            # echo "https://github.com/shbak88/readme/blob/master/src/openapi/$filename"  test!!
+    #         # Output the GitHub URL for the file
+    #         # echo "https://github.com/shbak88/readme/blob/master/src/openapi/$filename"  test!!
             
-            # Assuming README_API_KEY is set in the environment
-            rdme openapi "https://github.com/shbak88/readme/blob/master/src/openapi/$filename" --key $env:README_API_KEY --create
+    #         # Assuming README_API_KEY is set in the environment
+    #         rdme openapi "https://github.com/shbak88/readme/blob/master/src/openapi/$filename" --key $env:README_API_KEY --create
+    #     }
+    #   env:
+    #     README_API_KEY: ${{ secrets.README_KEY }}
+
+    - name: check push list
+      run: 
+        # 변경된 파일 목록에서 src/openapi 폴더 내의 파일만 추출
+        files = $(git diff --name-only origin/master | grep "^src/openapi/")
+        
+        # 파일명만 출력
+        foreach (file in $files) {
+            filename=$(basename "$file")
+            echo "$filename"
         }
-      env:
-        README_API_KEY: ${{ secrets.README_KEY }}
+        
 
         
