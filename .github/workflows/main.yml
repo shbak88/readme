@@ -49,11 +49,7 @@ jobs:
         # 변경된 파일 목록에서 src/openapi 폴더 내의 파일만 추출
         files = $(git diff --name-only origin/master | grep "^src/openapi/")
         
-        # 파일명만 출력
-        foreach (file in $files) {
-            filename=$(basename "$file")
-            echo "$filename"
-        }
+        echo files
         
 
         
