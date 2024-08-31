@@ -36,7 +36,7 @@ jobs:
     - name: Publish OpenAPI to ReadMe
       run: |
         # For 루프를 사용하여 scripts 디렉터리에 있는 모든 파일에 대해 반복 작업 수행
-        # $files = Get-ChildItem -Path "src/openapi/*"
+        $files = Get-ChildItem -Path "src/openapi/*"
         foreach ($file in $files) {
             # Extract the filename from the full path
             $filename = [System.IO.Path]::GetFileName($file)
