@@ -13,25 +13,25 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # - name: Set up Node.js
-    #   uses: actions/setup-node@v3
-    #   with:
-    #     node-version: '16' # 사용하고자 하는 Node.js 버전을 설정합니다. (예: 14, 16, 18 등)
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16' # 사용하고자 하는 Node.js 버전을 설정합니다. (예: 14, 16, 18 등)
     
-    # - name: Install rdme CLI
-    #   run: npm install -g rdme
+    - name: Install rdme CLI
+      run: npm install -g rdme
       
-    # - name: Install dependencies
-    #   run: npm install
+    - name: Install dependencies
+      run: npm install
 
-    # - name: Run build script
-    #   run: npm run build
+    - name: Run build script
+      run: npm run build
 
-    # - name: push file to run
-    #   run:
-    #     git diff --name-only HEAD~1 HEAD | grep "^src/" | while read file; do
-    #       echo "$file"
-    #     done
+    - name: push file to run
+      run:
+        git diff --name-only HEAD~1 HEAD | grep "^src/" | while read file; do
+          echo "$file"
+        done
 
     - name: Publish OpenAPI to ReadMe
       run: |
