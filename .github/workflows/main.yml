@@ -36,17 +36,21 @@ jobs:
     - name: Publish OpenAPI to ReadMe
       run: |
         # For 루프를 사용하여 scripts 디렉터리에 있는 모든 파일에 대해 반복 작업 수행
-        $files = Get-ChildItem -Path "src/openapi/*"
-        foreach ($file in $files) {
-            # Extract the filename from the full path
-            $filename = [System.IO.Path]::GetFileName($file)
+        git diff --name-only HEAD~1 HEAD | grep "^src/openapi/" | while read file; do
+            filename=$(basename "$file")
+            echo "https://github.com/shbak88/readme/blob/master/src/openapi/${filename}"
+        done
+        # $files = Get-ChildItem -Path "src/openapi/*"
+        # foreach ($file in $files) {
+        #     # Extract the filename from the full path
+        #     $filename = [System.IO.Path]::GetFileName($file)
             
-            # Output the GitHub URL for the file
-            echo "https://github.com/shbak88/readme/blob/master/src/openapi/$filename"  test!!
+        #     # Output the GitHub URL for the file
+        #     # echo "https://github.com/shbak88/readme/blob/master/src/openapi/$filename"  test!!
             
-            # Assuming README_API_KEY is set in the environment
-            # rdme openapi "https://github.com/shbak88/readme/blob/master/src/openapi/$filename" --key $env:README_API_KEY --update
-        }
+        #     # Assuming README_API_KEY is set in the environment
+        #     # rdme openapi "https://github.com/shbak88/readme/blob/master/src/openapi/$filename" --key $env:README_API_KEY --update
+        # }
       env:
         README_API_KEY: ${{ secrets.README_KEY }}
 
