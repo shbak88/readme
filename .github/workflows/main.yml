@@ -27,27 +27,21 @@ jobs:
     - name: Run build script
       run: npm run build
 
-    # - name: Publish OpenAPI to ReadMe
-    #   run: |
-    #     # For 루프를 사용하여 scripts 디렉터리에 있는 모든 파일에 대해 반복 작업 수행
-    #     $files = Get-ChildItem -Path "src/openapi/*"
-    #     foreach ($file in $files) {
-    #         # Extract the filename from the full path
-    #         $filename = [System.IO.Path]::GetFileName($file)
+    - name: Publish OpenAPI to ReadMe
+      run: |
+        # For 루프를 사용하여 scripts 디렉터리에 있는 모든 파일에 대해 반복 작업 수행
+        $files = Get-ChildItem -Path "src/openapi/*"
+        foreach ($file in $files) {
+            # Extract the filename from the full path
+            $filename = [System.IO.Path]::GetFileName($file)
             
-    #         # Output the GitHub URL for the file
-    #         # echo "https://github.com/shbak88/readme/blob/master/src/openapi/$filename"  test!!
+            # Output the GitHub URL for the file
+            # echo "https://github.com/shbak88/readme/blob/master/src/openapi/$filename"  test!!
             
-    #         # Assuming README_API_KEY is set in the environment
-    #         rdme openapi "https://github.com/shbak88/readme/blob/master/src/openapi/$filename" --key $env:README_API_KEY --create
-    #     }
-    #   env:
-    #     README_API_KEY: ${{ secrets.README_KEY }}
+            # Assuming README_API_KEY is set in the environment
+            rdme openapi "https://github.com/shbak88/readme/blob/master/src/openapi/$filename" --key $env:README_API_KEY --create
+        }
+      env:
+        README_API_KEY: ${{ secrets.README_KEY }}
 
-    - name: check push list
-      run: 
-        # PowerShell에서 Git 명령을 실행하여 변경된 파일 목록을 가져옵니다.
-        $changedFiles = git diff --name-only origin/master | Where-Object { $_ -like "src/openapi/*" }
-
-        echo $changedFiles
         
