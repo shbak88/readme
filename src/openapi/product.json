@@ -1,0 +1,5109 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "해외주식 API 명세서",
+    "description" : "****************************************** 공통  ******************************************************\nDate format(YYYYMMDD)\nPaging (page, limit) 페이징처리 가능여부는 API명세 파라미터확인\n****************************************** 해외주식 요청 정의  ******************************************\nexchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소),SHS(상해 거래소),SZS(심천 거래소)), symbol(주식 Tiker)\nfrequency(보고서 구분)('A'(연간),'Q'(분기),'S'(반기) Default ALL)\nfundamental(전망대상)(SALES(매출액),EBITDA,BFNG(순이익),EPS,BPS,DPS,REC,PRICE_TGT\nquarterOrder(분기구분값(1(1분기),2(2분기),3(3분기),4(4분기))\nequity(주주 구분)(shareholder: 일반주주(기타(일반)주주) fund: 보유상위펀드(펀드보유내역) investor: 기관투자자(13F Filing, 기관투자자))\n****************************************** 해외ETF 요청 정의  *******************************************\nsymbol(ETF Tiker)\nfeature(특성)(섹터,전략,국가,운용사,기업)\nid(테마id)\nleveragePower(레버리지 배수) (-3 ~ 3)\n****************************************** 해외ETF 응답 정의  *******************************************\nfrequency(ETF배당 분배주기)(0(일회성),1(매년),2(매반기),4(매분기),12(매월)",
+    "contact" : { },
+    "license" : {
+      "name" : "Shinhan OpenPlatform"
+    },
+    "version" : "v1"
+  },
+  "servers" : [ {
+    "url" : "172.22.220.44:8080"
+  } ],
+  "tags" : [ {
+    "name" : "common-controllerv-1",
+    "description" : "Common Controllerv 1"
+  }, {
+    "name" : "company-query-controllerv-1",
+    "description" : "Company Query Controllerv 1"
+  }, {
+    "name" : "etf-query-controllerv-1",
+    "description" : "ETF Query Controllerv 1"
+  } ],
+  "paths" : {
+    "/api/v1/fstock/cacheClear" : {
+      "get" : {
+        "tags" : [ "common-controllerv-1" ],
+        "summary" : "캐시클리어",
+        "description" : "Cache All clear",
+        "operationId" : "cacheclearUsingGET",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string",
+                  "exampleSetFlag" : false,
+                  "types" : [ "string" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/balance/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 재무추이",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), 옵션 : frequency(보고서 구분)('A'(연간),'Q'(분기),'S'(반기) Default ALL),Default : Paging (page, limit) Default(100개)",
+        "operationId" : "getCompanyBalanceTrendUsingGET",
+        "parameters" : [ {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "endDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "frequency",
+          "in" : "query",
+          "description" : "frequency",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "All"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "startDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanyBalanceDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/cashflow/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 현금흐름 추이",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), 옵션 : frequency(보고서 구분)('A'(연간),'Q'(분기),'S'(반기) Default ALL),Paging (page, limit)Default(현재일부터 -1년까지 최근데이터 100개 보고서 구분 구분없이 조회)",
+        "operationId" : "companyCashflowGetUsingGET",
+        "parameters" : [ {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "endDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "frequency",
+          "in" : "query",
+          "description" : "frequency",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "All"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "startDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanyCashflowDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/details/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 정보",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), 옵션 : 시세데이터 호출하려면 startDate(시작날짜 필수) ~ 전일종가까지) Paging (page, limit) 는 시세조회 시에만 사용",
+        "operationId" : "companyDetailsGetUsingGET",
+        "parameters" : [ {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "endDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "startDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResCompanyDetailsDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/equityStatus/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 지분현황 상세",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), 옵션 : equity(주주 구분)(shareholder: 일반주주(기타(일반)주주) fund: 보유상위펀드(펀드보유내역) investor: 기관투자자(13F Filing, 기관투자자))",
+        "operationId" : "companyEquityStatusUsingGET",
+        "parameters" : [ {
+          "name" : "equity",
+          "in" : "query",
+          "description" : "equity",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "All"
+          }
+        }, {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanyEquityStatusDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/estimate/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 전망치",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), 옵션 : frequency(보고서 구분)('A'(연간),'Q'(분기),'S'(반기) Default ALL), fundamental(전망대상)(SALES(매출액),EBITDA,BFNG(순이익),EPS,BPS,DPS Default ALL) Paging (page, limit) Default(현재일부터 -1년까지 최근데이터 100개 보고서 구분,전망대상 구분없이 조회) ",
+        "operationId" : "companyEstimateGetUsingGET",
+        "parameters" : [ {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "endDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "frequency",
+          "in" : "query",
+          "description" : "frequency",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "All"
+          }
+        }, {
+          "name" : "fundamental",
+          "in" : "query",
+          "description" : "fundamental",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "All"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "startDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanyEstimateDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/info/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 정보(복합)",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker)",
+        "operationId" : "companyInfoUsingGET",
+        "parameters" : [ {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResCompanyInfoDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/investOpinion/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 투자의견",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), Default : Paging (page, limit) Default(100개)",
+        "operationId" : "companyInvestOpinionInfoUsingGET",
+        "parameters" : [ {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "endDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "startDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanyInvestOpinionDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/isic/{country}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "국가별 해외 업종 리스트 조회",
+        "description" : "필수값 : country(국가)(USA(미국),SHASZA(중국(상해+심천)),CHN(홍콩)",
+        "operationId" : "getIsicListUsingGET",
+        "parameters" : [ {
+          "name" : "country",
+          "in" : "path",
+          "description" : "country",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResISICDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/isicStat/{country}/{period}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "국가별 해외 업종 상위 리스트 상세조회",
+        "description" : "필수값 : country(국가)(USA(미국),SHASZA(중국(상해+심천)),CHN(홍콩) 필수, period(DAY(1일),WEEK(1주),MONTH1(1달),MONTH3(3달))sort (sectorIndexDesc(지수 내림차순), sectorIndexAsc(지수 오름차순), transactionDesc(거래량 내림차순), risingStockDesc(ISIC 종목 상승률 내림차순), leadingSymbolDesc(주도주 상승률 내림차순) limit (갯수)",
+        "operationId" : "getISICCountryRankUsingGET",
+        "parameters" : [ {
+          "name" : "country",
+          "in" : "path",
+          "description" : "country",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "period",
+          "in" : "path",
+          "description" : "period",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "sort",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "sectorIndexDesc"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResISICStatDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/isicStock/{isicCode}/{country}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "국가별 해외 업종 내 주식종목 리스트 조회",
+        "description" : "필수값 : country(국가)(USA(미국),SHASZA(중국(상해+심천)),CHN(홍콩), isicCode(ISIC Code) 필수,",
+        "operationId" : "getISICStockListUsingGET",
+        "parameters" : [ {
+          "name" : "country",
+          "in" : "path",
+          "description" : "country",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "isicCode",
+          "in" : "path",
+          "description" : "isicCode",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResISICDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/ltmmutiple/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 LTM",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), 옵션 : quarterOrder(분기구분값(1(1분기),2(2분기),3(3분기),4(4분기)) (연간의 경우 '4', 반기의 경우 '1' 또는 '2'), Paging (page, limit) Default(현재일부터 -1년까지 최근데이터 100개 분기구분값 구분없이 조회)",
+        "operationId" : "companyLtmMultipleGetUsingGET",
+        "parameters" : [ {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "endDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "quarterOrder",
+          "in" : "query",
+          "description" : "quarterOrder",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "All"
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "startDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanyLTMDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/performance/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 실적추이",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), 옵션 : frequency(보고서 구분)('A'(연간),'Q'(분기),'S'(반기), All(전체)) Default All), quarterOrder(분기구분값(1(1분기),2(2분기),3(3분기),4(4분기), All(전체)) (연간의 경우 '4', 반기의 경우 '1' 또는 '2' Default 4), Paging (page, limit)Default(현재일부터 -2년까지 최근데이터 100개 보고서 구분 구분없이 조회)",
+        "operationId" : "companyPerformanceGetUsingGET",
+        "parameters" : [ {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "endDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "frequency",
+          "in" : "query",
+          "description" : "frequency",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "All"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "quarterOrder",
+          "in" : "query",
+          "description" : "quarterOrder",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "4"
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "startDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanyPerformanceDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/rank/{country}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "국가별 내 해외기업 랭킹",
+        "description" : "필수값 : country(국가)(USA(미국),SHASZA(중국(상해+심천)),CHN(홍콩)옵션 : standard(기준)(DEFAULT 'SALES')(배당금(DIVIDEND), 배당성향(DIVIDEND_PAYOUT_RATIO) 매출액(SALES), 영업이익(OPERINC), 당기순이익(NETINC), 영업이익률(OPER_MGN), EPS, BPS, PER, PBR)",
+        "operationId" : "getCompanyIndustryRankUsingGET",
+        "parameters" : [ {
+          "name" : "country",
+          "in" : "path",
+          "description" : "country",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "quarter_order",
+          "in" : "query",
+          "description" : "quarter_order",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "4"
+          }
+        }, {
+          "name" : "standard",
+          "in" : "query",
+          "description" : "standard",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "SALES"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanyCountryRankDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/recentRecord/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 최근실적",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), 옵션 : standardDate(기준 날짜) Default date 미설정시 현재날짜부터 -1년",
+        "operationId" : "getRecentRecordUsingGET",
+        "parameters" : [ {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "standardDate",
+          "in" : "query",
+          "description" : "standardDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResCompanyRecentRecordDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/segment/{exchange}/{symbol}/product" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 회사 매출구성(제품)",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), 옵션 : Paging (page, limit) Default(100개)",
+        "operationId" : "companyProdSegmentGetUsingGET",
+        "parameters" : [ {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanySegmentDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/segment/{exchange}/{symbol}/region" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 회사 매출구성(지역)",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), 옵션 : Paging (page, limit) Default(100개)",
+        "operationId" : "companyRegionSegmentGetUsingGET",
+        "parameters" : [ {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanySegmentDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/targetPrice/{exchange}/{symbol}" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 목표주가",
+        "description" : "필수값 : exchange(거래소)(AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소), symbol(주식 Ticker), Default : Paging (page, limit) Default(100개)",
+        "operationId" : "companyTargetPriceInfoUsingGET",
+        "parameters" : [ {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "endDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "exchange",
+          "in" : "path",
+          "description" : "exchange",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "startDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResCompanyTargetPriceDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/company/{cacheName}/clear" : {
+      "get" : {
+        "tags" : [ "company-query-controllerv-1" ],
+        "summary" : "해외기업 캐시클리어",
+        "description" : "캐시이름 리스트 : CompanyDetails, CompanyEstimate, CompanyLtmmutiple, CompanySegmentProduct, CompanySegmentRegion, CompanyCashflow,CompanyInfo, CompanyPerformance, CompanyInvestOpinion, CompanyInvestOpinion, CompanyTargetPrice, CompanyEquityStatus, CompanyBalance, CompanyRecentRecord, CompanyIndustryRank",
+        "operationId" : "CompanycacheclearUsingGET",
+        "parameters" : [ {
+          "name" : "cacheName",
+          "in" : "path",
+          "description" : "cacheName",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "string",
+                  "exampleSetFlag" : false,
+                  "types" : [ "string" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/accumulateRate" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 월별 수익률 조회",
+        "description" : "필수값 : symbol(\"종목(QQQ)\":\"투자비율(30)\")..., default( standard(SP500), year(10), budget(10000) )",
+        "operationId" : "accumulateMonthRateGetUsingGET",
+        "parameters" : [ {
+          "name" : "reqSymbolMap",
+          "in" : "query",
+          "description" : "reqSymbolMap",
+          "required" : true,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "object",
+            "exampleSetFlag" : false,
+            "types" : [ "object" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResAccumulateChartDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/country-weighting/{symbol}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 국가별비중 조회",
+        "description" : "필수값 : symbol(ETF Ticker)",
+        "operationId" : "countryWeightingGetUsingGET",
+        "parameters" : [ {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFCountryWeightingDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/details/{symbol}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 상세정보 조회",
+        "description" : "필수값 : symbol(ETF Ticker)",
+        "operationId" : "detailsGetUsingGET",
+        "parameters" : [ {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFDetailsDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/dividend/rank" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 분배율 랭킹(최근 1년의 분배율 내림차순)조회",
+        "operationId" : "dividendRankGetUsingGET",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResStockDividendRankDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/dividendYield" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 평균 시가배당률, 배당성장률 조회",
+        "description" : "필수값 : 없음(default value:sort(알파벳순), page(0), limit(100), 옵션 sort(divyield(평균배당금 내림차순(0제외)), adjdividendriseratio(평균 시가배당률 내림차순(0제외)popularity(EZAR 배당주TAG 거래인기순 5이하까지 출력))))",
+        "operationId" : "dividendYieldGetUsingGET",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "sort",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "Alphabet"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResDividendYieldDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/dividendYield/{symbol}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 시가배당률, 배당성장률 히스토리 조회",
+        "description" : "필수값 : symbol",
+        "operationId" : "dividendYieldHistoryGetUsingGET",
+        "parameters" : [ {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResDividendYieldYearDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/expense/rank" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 수수료 낮은 순 랭킹조회",
+        "description" : "Paging (page, limit) Default(100개)",
+        "operationId" : "expenseRankGetUsingGET",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResETFDetailsDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/holdings/{symbol}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 보유종목 조회",
+        "description" : "필수값 : symbol(ETF Ticker)",
+        "operationId" : "holdingsGetUsingGET",
+        "parameters" : [ {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFHoldingsDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/leverage/rank" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 레버리지별 ETF 랭킹(시가총액 내림차순)조회",
+        "description" : "레버리지(-3~3) 미설정시 기본값 1배 Paging (page, limit) Default(100개)",
+        "operationId" : "leverageRankGetUsingGET",
+        "parameters" : [ {
+          "name" : "leveragePower",
+          "in" : "query",
+          "description" : "leveragePower",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 1
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResETFDetailsDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/mdd/{symbol}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF MDD(최대손실률)조회(ETF 최초 거래일부터)",
+        "description" : "필수값 : symbol(ETF Ticker)",
+        "operationId" : "mddGetUsingGET",
+        "parameters" : [ {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFMDDInfoDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/sector-weighting/{symbol}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 섹터별비중 조회",
+        "description" : "필수값 : symbol(ETF Ticker)",
+        "operationId" : "sectorWeightingGetUsingGET",
+        "parameters" : [ {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFSectorWeightingDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/stat/{symbol}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 상세지표",
+        "description" : "필수값 : symbol",
+        "operationId" : "statGetUsingGET",
+        "parameters" : [ {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFStatDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/stock-exposure/{symbol}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "특정종목 포함된 ETF 찾기",
+        "description" : "필수값 : symbol(ETF Ticker)",
+        "operationId" : "stockExposureGetUsingGET",
+        "parameters" : [ {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResETFStockExposureDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/stockDividend/{symbol}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 과거 배당내역",
+        "description" : "필수값 : symbol(ETF Ticker) 응답값 frequency(ETF배당 분배주기)(0(일회성),1(매년),2(매반기),4(매분기),12(매월)",
+        "operationId" : "stockDividendGetUsingGET",
+        "parameters" : [ {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "endDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "limit",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 100
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "page",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ],
+            "default" : 0
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "startDate",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        }, {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFStockDividendDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/theme" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 테마 리스트 조회",
+        "description" : "옵션 : feature(특성)(섹터,전략,국가,운용사,기업)Default(모든 특성조회) ",
+        "operationId" : "categoriesAllGetUsingGET",
+        "parameters" : [ {
+          "name" : "feature",
+          "in" : "query",
+          "description" : "feature",
+          "required" : false,
+          "style" : "FORM",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "default" : "All"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "exampleSetFlag" : false,
+                  "items" : {
+                    "$ref" : "#/components/schemas/ResETFCategoriesDto",
+                    "exampleSetFlag" : false
+                  },
+                  "types" : [ "array" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/theme/holdings/random" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 테마(조건 : 무작위 + ETF 2개이상)내 비교",
+        "operationId" : "etfThemeholdingsGetUsingGET",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFCategoriesDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/theme/{id}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "테마별 ETF 리스트 조회",
+        "description" : "필수 값 : id(테마id)",
+        "operationId" : "categoriesGetUsingGET",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "id",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFCategoriesDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/theme/{id}/stocklist" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "테마에 속해있는 ETF 구성종목 중 주식만 조회(시총 내림차순으로 정렬)",
+        "description" : "필수 값 : id(테마id)",
+        "operationId" : "categoriesAllstocklistGetUsingGET",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "id",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFCategoriesStockListDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/weighting/{symbol}" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 보유 비중 리스트 조회",
+        "description" : "필수값 : symbol(ETF Ticker)",
+        "operationId" : "weightingGetUsingGET",
+        "parameters" : [ {
+          "name" : "symbol",
+          "in" : "path",
+          "description" : "symbol",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResETFOwnWeightingDto",
+                  "exampleSetFlag" : false
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fstock/etf/{cacheName}/clear" : {
+      "get" : {
+        "tags" : [ "etf-query-controllerv-1" ],
+        "summary" : "ETF 캐시클리어",
+        "description" : "ETFRank, ETFDetails, ETFSectorWeighting, ETFCountryWeighting, ETFStockExposure, ETFStockHoldings, ETFList, ETFWeighting, ETFMdd, ETFStockDividend",
+        "operationId" : "etfcacheclearUsingGET",
+        "parameters" : [ {
+          "name" : "cacheName",
+          "in" : "path",
+          "description" : "cacheName",
+          "required" : true,
+          "style" : "SIMPLE",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/xml" : {
+                "schema" : {
+                  "type" : "string",
+                  "exampleSetFlag" : false,
+                  "types" : [ "string" ]
+                },
+                "exampleSetFlag" : false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "CountryWeight" : {
+        "title" : "CountryWeight",
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string",
+            "description" : "국가(영어)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "country_ko" : {
+            "type" : "string",
+            "description" : "국가(국문)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "weight_percent" : {
+            "type" : "number",
+            "description" : "해당 국가가 ETF에서 차지하는 비중. 단위(%)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ETFHolding" : {
+        "title" : "ETFHolding",
+        "type" : "object",
+        "properties" : {
+          "asset" : {
+            "type" : "string",
+            "description" : "해외주식 심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "cusip" : {
+            "type" : "string",
+            "description" : "CUSIP 정보",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "date" : {
+            "type" : "string",
+            "description" : "보유 기준일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "isin" : {
+            "type" : "string",
+            "description" : "ISIN 정보",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "market_value" : {
+            "type" : "number",
+            "description" : "ETF가 보유한 해당 종목의 시장가치. 단위(USD)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "해당 종목의 영문이름",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "name_ko" : {
+            "type" : "string",
+            "description" : "해당 종목의 국문이름",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "shares_number" : {
+            "type" : "number",
+            "description" : "ETF가 보유한 해당 종목의 시장가치. 단위(주)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "weight_percent" : {
+            "type" : "number",
+            "description" : "해당 개발종목이 ETF에서 차지하는 비중. 단위(%)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ETFList" : {
+        "title" : "ETFList",
+        "type" : "object",
+        "properties" : {
+          "close" : {
+            "type" : "number",
+            "description" : "종가",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "close_date" : {
+            "type" : "string",
+            "description" : "종가 날짜",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "description_ko" : {
+            "type" : "string",
+            "description" : "간단한 ETF 설명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "first_trading_date" : {
+            "type" : "string",
+            "description" : "최초거래일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "fluctuation_rate" : {
+            "type" : "number",
+            "description" : "등락률",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "id" : {
+            "type" : "integer",
+            "description" : "ETF id",
+            "format" : "int64",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "leverage_power" : {
+            "type" : "integer",
+            "description" : "레버리지 상품인 경우, 레버리지 배수. 3이면 3배, 1이면 1배, -1이면 -1배 인버스, -3이면 -3배 인버스",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "name_ko" : {
+            "type" : "string",
+            "description" : "ETF 국문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "ETF 심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "History" : {
+        "title" : "History",
+        "type" : "object",
+        "properties" : {
+          "adj_dividend" : {
+            "type" : "number",
+            "description" : "수정배당금액. 단위(USD)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "declaration_date" : {
+            "type" : "string",
+            "description" : "배당공시일. 미국일자 기준.",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "dividend" : {
+            "type" : "number",
+            "description" : "배당금액. 단위(USD)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "ex_date" : {
+            "type" : "string",
+            "description" : "배당락일. 미국일자 기준",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "payment_date" : {
+            "type" : "string",
+            "description" : "배당지급일. 미국일자 기준",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "payout_close_ratio" : {
+            "type" : "number",
+            "description" : "배당금액 대비 (현재시점의) 전일 종가(adj_dividend / close(전일 종가는 안내려옴))",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "payout_ex_close_ratio" : {
+            "type" : "number",
+            "description" : "배당금액 대비 배당락일 종가( 계산식: adj_dividend / ex_date_close(배당락일 종가는 안내려옴))",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "record_date" : {
+            "type" : "string",
+            "description" : "배당기록일. 미국일자 기준",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "MDD" : {
+        "title" : "MDD",
+        "type" : "object",
+        "properties" : {
+          "drawdown" : {
+            "type" : "number",
+            "description" : "최대손실률. 단위(%)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "peak" : {
+            "$ref" : "#/components/schemas/Price",
+            "exampleSetFlag" : false
+          },
+          "trough" : {
+            "$ref" : "#/components/schemas/Price",
+            "exampleSetFlag" : false
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "MDDSingleDay" : {
+        "title" : "MDDSingleDay",
+        "type" : "object",
+        "properties" : {
+          "drawdown" : {
+            "type" : "number",
+            "description" : "최대손실률. 단위(%)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "price" : {
+            "type" : "number",
+            "description" : "가장 고점 시기",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "trough" : {
+            "type" : "string",
+            "description" : "하루동안 가장 많이 하락한 해당일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "Price" : {
+        "title" : "Price",
+        "type" : "object",
+        "properties" : {
+          "date" : {
+            "type" : "string",
+            "description" : "날짜",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "price" : {
+            "type" : "number",
+            "description" : "가격",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "Quote" : {
+        "title" : "Quote",
+        "type" : "object",
+        "properties" : {
+          "acvol_1" : {
+            "type" : "number",
+            "description" : "누적거래량",
+            "format" : "float",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "high_1" : {
+            "type" : "number",
+            "description" : "최고가",
+            "format" : "float",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "low_1" : {
+            "type" : "number",
+            "description" : "최저가",
+            "format" : "float",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "netchng_1" : {
+            "type" : "number",
+            "description" : "전일대비",
+            "format" : "float",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "netchng_cls" : {
+            "type" : "number",
+            "description" : "전일대비구분",
+            "format" : "float",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "open_prc" : {
+            "type" : "number",
+            "description" : "시가",
+            "format" : "float",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "pctchng_1" : {
+            "type" : "number",
+            "description" : "전일대비구율",
+            "format" : "float",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "tradeDate" : {
+            "type" : "string",
+            "description" : "거래날짜",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "trdprc_1" : {
+            "type" : "number",
+            "description" : "현재가",
+            "format" : "float",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "trdprc_adj" : {
+            "type" : "number",
+            "description" : "수정계수",
+            "format" : "float",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "turnover" : {
+            "type" : "number",
+            "description" : "누적거래대금",
+            "format" : "float",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResAccumulateChartDto" : {
+        "title" : "ResAccumulateChartDto",
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "description" : "차트 데이터",
+            "exampleSetFlag" : false,
+            "items" : {
+              "type" : "array",
+              "exampleSetFlag" : false,
+              "items" : {
+                "type" : "integer",
+                "format" : "int32",
+                "exampleSetFlag" : false,
+                "types" : [ "integer" ]
+              },
+              "types" : [ "array" ]
+            },
+            "types" : [ "array" ]
+          },
+          "error" : {
+            "type" : "string",
+            "description" : "에러",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "key" : {
+            "type" : "array",
+            "description" : "Symbol",
+            "exampleSetFlag" : false,
+            "items" : {
+              "type" : "string",
+              "exampleSetFlag" : false,
+              "types" : [ "string" ]
+            },
+            "types" : [ "array" ]
+          },
+          "label" : {
+            "type" : "array",
+            "description" : "라벨값(연월)",
+            "exampleSetFlag" : false,
+            "items" : {
+              "$ref" : "#/components/schemas/YearMonth",
+              "exampleSetFlag" : false
+            },
+            "types" : [ "array" ]
+          },
+          "standardSymbol" : {
+            "type" : "string",
+            "description" : "날짜 기준Symbol",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyBalanceDto" : {
+        "title" : "ResCompanyBalanceDto",
+        "type" : "object",
+        "properties" : {
+          "asset" : {
+            "type" : "number",
+            "description" : "자산총계",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "comEqRetainEarn" : {
+            "type" : "number",
+            "description" : "이익잉여금",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "currRatio" : {
+            "type" : "number",
+            "description" : "유동비율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "currency" : {
+            "type" : "string",
+            "description" : "재무제표 기준 통화",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "debtOverAsset" : {
+            "type" : "string",
+            "description" : "자산 대비 차입금(총차입금/총자산)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "ebitOperIntCovg" : {
+            "type" : "number",
+            "description" : "이자보상비율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "eqTot" : {
+            "type" : "number",
+            "description" : "자본총계",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "fiscalEndDate" : {
+            "type" : "string",
+            "description" : "보고서 기준일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "liabs" : {
+            "type" : "number",
+            "description" : "부채총계",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyCashflowDto" : {
+        "title" : "ResCompanyCashflowDto",
+        "type" : "object",
+        "properties" : {
+          "capex" : {
+            "type" : "number",
+            "description" : "자본적지출 단위(백만)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "currency" : {
+            "type" : "string",
+            "description" : "재무제표 기준 통화",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "finCf" : {
+            "type" : "number",
+            "description" : "순재무현금흐름 단위(백만)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "fiscalEndDate" : {
+            "type" : "string",
+            "description" : "보고서 기준일",
+            "example" : "YYYY-MM-DD",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "investCf" : {
+            "type" : "number",
+            "description" : "순투자현금흐름 단위(백만)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "netCf" : {
+            "type" : "number",
+            "description" : "현금흐름합 단위(백만)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "operCf" : {
+            "type" : "number",
+            "description" : "순영업현금흐름 단위(백만)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyCountryRankDto" : {
+        "title" : "ResCompanyCountryRankDto",
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string",
+            "description" : "국가 코드",
+            "example" : "USA(미국),SHASZA(중국(상해+심천),CHN(홍콩)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "date" : {
+            "type" : "string",
+            "description" : "보고서 기준일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "eng_name" : {
+            "type" : "string",
+            "description" : "종목 영문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "exchange" : {
+            "type" : "string",
+            "description" : "거래소 코드",
+            "example" : "AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "kor_name" : {
+            "type" : "string",
+            "description" : "종목 한국명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "rank" : {
+            "type" : "integer",
+            "description" : "순위",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "standard" : {
+            "type" : "string",
+            "description" : "기준 지표",
+            "example" : "배당금(DIVIDEND)(원), 배당성향(DIVIDEND_PAYOUT_RATIO) 매출액(SALES)(백만), 영업이익(OPERINC)(백만), 당기순이익(NET_INC)(백만), EPS(원), BPS(원), PER(배), PBR(배)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "종목 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "value" : {
+            "type" : "number",
+            "description" : "기준 지표값",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyDetailsDto" : {
+        "title" : "ResCompanyDetailsDto",
+        "type" : "object",
+        "properties" : {
+          "address" : {
+            "type" : "string",
+            "description" : "기업주소",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "country_code" : {
+            "type" : "string",
+            "description" : "국가코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "eng_summary" : {
+            "type" : "string",
+            "description" : "기업소개(영문)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "entity_id" : {
+            "type" : "string",
+            "description" : "팩셋기준 발행회사 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "exchange_id" : {
+            "type" : "string",
+            "description" : "거래소ID",
+            "example" : "AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "fcompany_code" : {
+            "type" : "string",
+            "description" : "팩셋기준 재무제표 기준 회사 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "fcurrency" : {
+            "type" : "string",
+            "description" : "재무제표 기준 통화",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "findustry" : {
+            "type" : "string",
+            "description" : "재무제표 기준 산업",
+            "example" : "1(일반산업(Industrial)), 2(은행(Bank), 3(보험(Insurance), 4(기타산업(Other Financial))",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "fsym_id" : {
+            "type" : "string",
+            "description" : "팩셋기준 종목코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "homepage" : {
+            "type" : "string",
+            "description" : "홈페이지",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "kor_name" : {
+            "type" : "string",
+            "description" : "발행기업 국문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "mcap_date" : {
+            "type" : "string",
+            "description" : "시가총액 기준일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "mcap_total" : {
+            "type" : "number",
+            "description" : "시가총액 - 전체 주식수(단위 백만주)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "발행기업 영문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "outstanding_date" : {
+            "type" : "string",
+            "description" : "주식수 기준일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "outstanding_instrument" : {
+            "type" : "number",
+            "description" : "해당 주권 발행 주식수(단위 주)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "outstanding_total" : {
+            "type" : "number",
+            "description" : "전체 발행 주식수(단위 주)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "phone" : {
+            "type" : "string",
+            "description" : "전화번호",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "quotelist" : {
+            "type" : "array",
+            "description" : "시세 리스트",
+            "exampleSetFlag" : false,
+            "items" : {
+              "$ref" : "#/components/schemas/Quote",
+              "exampleSetFlag" : false
+            },
+            "types" : [ "array" ]
+          },
+          "security_code" : {
+            "type" : "string",
+            "description" : "Ownership 조회용 주권 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "summary" : {
+            "type" : "string",
+            "description" : "기업소개(국문)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "종목 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyEquityStatusDto" : {
+        "title" : "ResCompanyEquityStatusDto",
+        "type" : "object",
+        "properties" : {
+          "ownership" : {
+            "type" : "string",
+            "description" : "주주명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "position" : {
+            "type" : "number",
+            "description" : "보유주식수 단위(주)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "weight" : {
+            "type" : "number",
+            "description" : "비중",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyEstimateDto" : {
+        "title" : "ResCompanyEstimateDto",
+        "type" : "object",
+        "properties" : {
+          "cons_start_date" : {
+            "type" : "string",
+            "description" : "데이터 기준일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "currency" : {
+            "type" : "string",
+            "description" : "재무제표 기준 통화",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "exchange_id" : {
+            "type" : "string",
+            "description" : "거래소 코드",
+            "example" : "AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "fe_down" : {
+            "type" : "integer",
+            "description" : "전망치를 하향 조정한 IB의 수 단위(개)",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "fe_fp_end" : {
+            "type" : "string",
+            "description" : "전망 대상 일자",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "fe_high" : {
+            "type" : "number",
+            "description" : "전망치 - 최고",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "fe_low" : {
+            "type" : "number",
+            "description" : "전망치 - 최저",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "fe_mean" : {
+            "type" : "number",
+            "description" : "전망치 - 평균",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "fe_num_est" : {
+            "type" : "integer",
+            "description" : "IB의 수",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "fe_per_rel" : {
+            "type" : "integer",
+            "description" : "회계기간의 수",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "fe_up" : {
+            "type" : "integer",
+            "description" : "전망치를 상향 조정한 IB의 수 단위(개)",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "frequency" : {
+            "type" : "string",
+            "description" : "보고서 구분",
+            "example" : "A:연간, Q:분기, S:반기",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "fundamental_item" : {
+            "type" : "string",
+            "description" : "전망 대상",
+            "example" : "SALES(매출액),EBITDA,BFNG(순이익),EPS,BPS,DPS",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "종목 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyInfoDto" : {
+        "title" : "ResCompanyInfoDto",
+        "type" : "object",
+        "properties" : {
+          "exchangeId" : {
+            "type" : "string",
+            "description" : "거래소ID",
+            "example" : "AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "homepage" : {
+            "type" : "string",
+            "description" : "회사 홈페이지",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "opinionScore" : {
+            "type" : "number",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "ownerName" : {
+            "type" : "array",
+            "description" : "대표이름",
+            "exampleSetFlag" : false,
+            "items" : {
+              "type" : "string",
+              "exampleSetFlag" : false,
+              "types" : [ "string" ]
+            },
+            "types" : [ "array" ]
+          },
+          "summary" : {
+            "type" : "string",
+            "description" : "설명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "targetPrice" : {
+            "type" : "number",
+            "description" : "목표 주가",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyInvestOpinionDto" : {
+        "title" : "ResCompanyInvestOpinionDto",
+        "type" : "object",
+        "properties" : {
+          "currency" : {
+            "type" : "string",
+            "description" : "재무제표 기준 통화",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "date" : {
+            "type" : "string",
+            "description" : "보고서 기준일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "fe_buy" : {
+            "type" : "integer",
+            "description" : "매수비율 단위(%)",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "fe_hold" : {
+            "type" : "integer",
+            "description" : "중립비율 단위(%)",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "fe_mean" : {
+            "type" : "number",
+            "description" : "목표주가",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "fe_over" : {
+            "type" : "integer",
+            "description" : "비중확대비율 단위(%)",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "fe_sell" : {
+            "type" : "integer",
+            "description" : "매도비율 단위(%)",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "fe_total" : {
+            "type" : "integer",
+            "description" : "전체 IB수",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "fe_under" : {
+            "type" : "integer",
+            "description" : "비중축소비율 단위(%)",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyLTMDto" : {
+        "title" : "ResCompanyLTMDto",
+        "type" : "object",
+        "properties" : {
+          "bps_secs" : {
+            "type" : "number",
+            "description" : "BPS(MRQ) 단위(원)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "dps_secs" : {
+            "type" : "number",
+            "description" : "DPS(LTM) 단위(원)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "entrpr_val_ebitda_oper" : {
+            "type" : "number",
+            "description" : "EV/EBITDA(LTM) 단위(배)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "eps_secs" : {
+            "type" : "number",
+            "description" : "EPS(LTM) 단위(원)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "exchange_id" : {
+            "type" : "string",
+            "description" : "거래소 코드",
+            "example" : "AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "f_industry" : {
+            "type" : "string",
+            "description" : "산업분류",
+            "example" : "1:일반산업, 2:은행, 3:보험, 4:기타 산업",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "fiscal_end_date" : {
+            "type" : "string",
+            "description" : "보고서 기준일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "free_ps_cf" : {
+            "type" : "number",
+            "description" : "CPS(LTM) 단위(원)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "frequency" : {
+            "type" : "string",
+            "description" : "보고서 구분",
+            "example" : "L",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "net_inc" : {
+            "type" : "number",
+            "description" : "당기순이익(LTM) 단위(백만)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "oper_inc" : {
+            "type" : "number",
+            "description" : "영업이익(LTM) 단위(백만)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "pbk_secs" : {
+            "type" : "number",
+            "description" : "PBR(MRQ) 단위(배)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "pcf" : {
+            "type" : "number",
+            "description" : "PCR(LTM) 단위(배)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "pe_secs" : {
+            "type" : "number",
+            "description" : "PER(LTM) 단위(배)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "psales" : {
+            "type" : "number",
+            "description" : "PSR(LTM) 단위(배)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "quarter_order" : {
+            "type" : "string",
+            "description" : "분기 구분 값",
+            "example" : "1:1분기 2:2분기 3:3분기 4:4분기 (연간의 경우 '4', 반기의 경우 '1' 또는 '2')",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "sales" : {
+            "type" : "number",
+            "description" : "매출액(LTM) 단위(백만)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "sales_ps" : {
+            "type" : "number",
+            "description" : "SPS(LTM) 단위(원)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "종목 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyPerformanceDto" : {
+        "title" : "ResCompanyPerformanceDto",
+        "type" : "object",
+        "properties" : {
+          "adj_net_oth" : {
+            "type" : "number",
+            "description" : "기타 세후조정",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "cogs_xdep" : {
+            "type" : "number",
+            "description" : "매출원가 (감가 및 감모상각비 제외)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "commiss_inc" : {
+            "type" : "number",
+            "description" : "수수료수익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "consol_net_inc" : {
+            "type" : "number",
+            "description" : "연결순이익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "dep_amort_exp" : {
+            "type" : "number",
+            "description" : "감가 및 감모상각비",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "ebit_oper" : {
+            "type" : "number",
+            "description" : "EBIT (영업이익)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "ebitda_oper" : {
+            "type" : "number",
+            "description" : "EBITDA (법인세, 이자, 감가상각비 차감 전 영업이익)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "eps_basic" : {
+            "type" : "number",
+            "description" : "EPS - 기본 - 특별손익 차감 전",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "eps_dil" : {
+            "type" : "number",
+            "description" : "EPS - 완전 희석",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "exchange_id" : {
+            "type" : "string",
+            "description" : "거래소 코드",
+            "example" : "AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "f_industry" : {
+            "type" : "string",
+            "description" : "산업분류",
+            "example" : "1:일반산업, 2:은행, 3:보험, 4:기타 산업",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "fcurrency" : {
+            "type" : "string",
+            "description" : "재무제표 기준 통화",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "fin_assets_impair" : {
+            "type" : "number",
+            "description" : "금융자산 손상차손",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "fiscal_end_date" : {
+            "type" : "string",
+            "description" : "보고서 기준일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "for_exch_inc" : {
+            "type" : "number",
+            "description" : "외환차익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "frequency" : {
+            "type" : "string",
+            "description" : "보고서 구분",
+            "example" : "A:연간, Q:분기, S:반기",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "gross_inc" : {
+            "type" : "number",
+            "description" : "매출총이익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "inc_tax" : {
+            "type" : "number",
+            "description" : "법인세",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "int_exp_debt" : {
+            "type" : "number",
+            "description" : "총이자비용",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "int_exp_net" : {
+            "type" : "number",
+            "description" : "이자비용",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "int_exp_tot" : {
+            "type" : "number",
+            "description" : "총이자비용 - 은행",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "int_inc" : {
+            "type" : "number",
+            "description" : "이자수익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "int_inc_aft_prov" : {
+            "type" : "number",
+            "description" : "대손충당금 공제 후 순이자이익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "int_inc_net" : {
+            "type" : "number",
+            "description" : "순이자수익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "int_inc_non_oper" : {
+            "type" : "number",
+            "description" : "비영업이자수익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "legal_claim_exp" : {
+            "type" : "number",
+            "description" : "법적청구비용",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "loan_loss_prov" : {
+            "type" : "number",
+            "description" : "대손상각비",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "loss_claim_rsrv" : {
+            "type" : "number",
+            "description" : "손실, 청구 및 준비금",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "min_int_exp" : {
+            "type" : "number",
+            "description" : "비지배주주지분 이자비용, 소수주주지분 이자비용",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "misc_exp_non_oper" : {
+            "type" : "number",
+            "description" : "기타수익 (비용)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "net_inc" : {
+            "type" : "number",
+            "description" : "당기순이익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "net_inc_basic" : {
+            "type" : "number",
+            "description" : "보통주 배당가능이익 - 기본",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "net_inc_cf" : {
+            "type" : "number",
+            "description" : "당기순이익(현금흐름)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "non_int_exp" : {
+            "type" : "number",
+            "description" : "비이자비용",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "non_int_inc" : {
+            "type" : "number",
+            "description" : "비이자이익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "non_oper_inc" : {
+            "type" : "number",
+            "description" : "비영업이익 (비용)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "oper_exp" : {
+            "type" : "number",
+            "description" : "총영업비용",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "oper_exp_oth" : {
+            "type" : "number",
+            "description" : "기타영업비용",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "oper_inc" : {
+            "type" : "number",
+            "description" : "영업이익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "oper_inc_aft_int" : {
+            "type" : "number",
+            "description" : "이자비용 차감 후 영업이익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "oper_inc_bef_int" : {
+            "type" : "number",
+            "description" : "이자비용 차감 전 영업이익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "oper_inc_oth" : {
+            "type" : "number",
+            "description" : "기타영업수익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "oth_unusual_exp" : {
+            "type" : "number",
+            "description" : "기타 비경상비용",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "ptx_inc" : {
+            "type" : "number",
+            "description" : "세전이익",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "quarter_order" : {
+            "type" : "string",
+            "description" : "분기 구분 값",
+            "example" : "4:4분기 (연간의 경우 '4')",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "rd_exp" : {
+            "type" : "number",
+            "description" : "연구개발비",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "sales" : {
+            "type" : "number",
+            "description" : "매출액",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "sga" : {
+            "type" : "number",
+            "description" : "판매비와 관리비",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "sga_oth" : {
+            "type" : "number",
+            "description" : "기타 판매비와 관리비",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "sga_oth_exp" : {
+            "type" : "number",
+            "description" : "판매비와 관리비 및 기타",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "종목 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "unreal_invest_gl" : {
+            "type" : "number",
+            "description" : "미실현 투자이익 및 손실",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "unusual_exp" : {
+            "type" : "number",
+            "description" : "비경상비용",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyRecentRecordDto" : {
+        "title" : "ResCompanyRecentRecordDto",
+        "type" : "object",
+        "properties" : {
+          "currency" : {
+            "type" : "string",
+            "description" : "재무제표 기준 통화",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "estimate" : {
+            "type" : "number",
+            "description" : "평균예측 전망치(매출액)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "record" : {
+            "type" : "number",
+            "description" : "전망치(매출액)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "surprise" : {
+            "type" : "number",
+            "description" : "서프라이즈(전망치 / 평균예측 전망치) 단위(%)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanySegmentDto" : {
+        "title" : "ResCompanySegmentDto",
+        "type" : "object",
+        "properties" : {
+          "exchange_id" : {
+            "type" : "string",
+            "description" : "거래소 코드",
+            "example" : "AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "idate" : {
+            "type" : "string",
+            "description" : "일자",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "iyymm" : {
+            "type" : "string",
+            "description" : "결산연월",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "segment" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "number",
+              "format" : "double",
+              "exampleSetFlag" : false,
+              "types" : [ "number" ]
+            },
+            "exampleSetFlag" : false,
+            "types" : [ "object" ]
+          },
+          "stype" : {
+            "type" : "string",
+            "description" : "타입구분",
+            "example" : "0:제품(서비스), 1:지역",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "종목 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResCompanyTargetPriceDto" : {
+        "title" : "ResCompanyTargetPriceDto",
+        "type" : "object",
+        "properties" : {
+          "currency" : {
+            "type" : "string",
+            "description" : "재무제표 기준 통화",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "date" : {
+            "type" : "string",
+            "description" : "보고서 기준일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "fe_down" : {
+            "type" : "integer",
+            "description" : "전망치를 하향 조정한 IB의수 단위(개)",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "fe_high" : {
+            "type" : "number",
+            "description" : "전망치-최고",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "fe_low" : {
+            "type" : "number",
+            "description" : "전망치-최저",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "fe_mean" : {
+            "type" : "number",
+            "description" : "전망치-평균",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "fe_num_est" : {
+            "type" : "integer",
+            "description" : "IB의 수",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "fe_up" : {
+            "type" : "integer",
+            "description" : "전망치를 상향 조정한 IB의수 단위(개)",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResDividendYieldDto" : {
+        "title" : "ResDividendYieldDto",
+        "type" : "object",
+        "properties" : {
+          "hasNext" : {
+            "type" : "boolean",
+            "description" : "다음페이지 존재여부",
+            "example" : false,
+            "exampleSetFlag" : true,
+            "types" : [ "boolean" ]
+          },
+          "symbolList" : {
+            "type" : "array",
+            "description" : "symbol 리스트",
+            "exampleSetFlag" : false,
+            "items" : {
+              "$ref" : "#/components/schemas/ResDividendYieldYearDto",
+              "exampleSetFlag" : false
+            },
+            "types" : [ "array" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResDividendYieldYearDto" : {
+        "title" : "ResDividendYieldYearDto",
+        "type" : "object",
+        "properties" : {
+          "adj_dividend" : {
+            "type" : "number",
+            "description" : "연 배당금",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "adj_dividend_rise_ratio" : {
+            "type" : "number",
+            "description" : "(평균)연배당 성장률(year(AVG)인 경우 평균 연배당 성장률)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "div_yield" : {
+            "type" : "number",
+            "description" : "(평균)연시가 배당률(year(AVG)인 경우 평균 연시가 성장률)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "exchange" : {
+            "type" : "string",
+            "description" : "거래소ID",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "last_day_price" : {
+            "type" : "number",
+            "description" : "연 마지막 영업일 주가",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "ETF 영문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "name_ko" : {
+            "type" : "string",
+            "description" : "ETF 국문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "year" : {
+            "type" : "string",
+            "description" : "연도",
+            "example" : "1900,1901...., AVG",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFCategoriesDto" : {
+        "title" : "ResETFCategoriesDto",
+        "type" : "object",
+        "properties" : {
+          "category_img" : {
+            "type" : "string",
+            "description" : "카테고리 이미지",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "description_ko" : {
+            "type" : "string",
+            "description" : "카테고리 설명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "domicile" : {
+            "type" : "string",
+            "description" : "상장된 시장",
+            "example" : "us: 미국, ir: 아일랜드, kr: 한국",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "etf_list" : {
+            "type" : "array",
+            "exampleSetFlag" : false,
+            "items" : {
+              "$ref" : "#/components/schemas/ETFList",
+              "exampleSetFlag" : false
+            },
+            "types" : [ "array" ]
+          },
+          "feature" : {
+            "type" : "string",
+            "description" : "투자테마",
+            "example" : "섹터, 전략, 국가, 운용사, 기업",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "id" : {
+            "type" : "integer",
+            "description" : "카테고리 id",
+            "format" : "int64",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "priority" : {
+            "type" : "string",
+            "description" : "카테고리별 인기순위. 클릭수 기준",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "title_ko" : {
+            "type" : "string",
+            "description" : "카테고리 제목",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "view_change" : {
+            "type" : "number",
+            "description" : "어제 대비 클릭수 증가분",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFCategoriesStockListDto" : {
+        "title" : "ResETFCategoriesStockListDto",
+        "type" : "object",
+        "properties" : {
+          "category_img" : {
+            "type" : "string",
+            "description" : "카테고리 이미지",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "description_ko" : {
+            "type" : "string",
+            "description" : "간단한 ETF 설명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "id" : {
+            "type" : "integer",
+            "description" : "카테고리 id",
+            "format" : "int64",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "stock_list" : {
+            "type" : "array",
+            "description" : "주식 리스트",
+            "exampleSetFlag" : false,
+            "items" : {
+              "$ref" : "#/components/schemas/ETFHolding",
+              "exampleSetFlag" : false
+            },
+            "types" : [ "array" ]
+          },
+          "title_ko" : {
+            "type" : "string",
+            "description" : "카테고리 제목",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFCountryWeightingDto" : {
+        "title" : "ResETFCountryWeightingDto",
+        "type" : "object",
+        "properties" : {
+          "country_weight" : {
+            "type" : "array",
+            "description" : "국가 비중",
+            "exampleSetFlag" : false,
+            "items" : {
+              "$ref" : "#/components/schemas/CountryWeight",
+              "exampleSetFlag" : false
+            },
+            "types" : [ "array" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "ETF 심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFDetailsDto" : {
+        "title" : "ResETFDetailsDto",
+        "type" : "object",
+        "properties" : {
+          "asset_manager" : {
+            "type" : "string",
+            "description" : "해당 ETF의 운용사",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "bench_mark" : {
+            "type" : "string",
+            "description" : "벤치마킹",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "beta" : {
+            "type" : "number",
+            "description" : "베타값",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "cons_ko" : {
+            "type" : "string",
+            "description" : "해당 ETF의 단점",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "description_ko" : {
+            "type" : "string",
+            "description" : "국문 간단 설명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "expense" : {
+            "type" : "number",
+            "description" : "연간 순운용보수(net expense ratio), 총운용보수(gross expense)에서 할인된 금액을 뺀 비용. 매년 부과. 단위(%)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "first_trading_date" : {
+            "type" : "string",
+            "description" : "최초거래일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "home_page" : {
+            "type" : "string",
+            "description" : "해당 ETF의 공식홈페이지 주소(URL)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "index_criteria" : {
+            "type" : "string",
+            "description" : "ETF가 추종하는 비교지수의 투자방법",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "leverage_power" : {
+            "type" : "number",
+            "description" : "레버리지 상품인 경우, 레버리지 배수. 3이면 3배, 1이면 1배, -1이면 -1배 인버스, -3이면 -3배 인버스",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "marketcap" : {
+            "type" : "number",
+            "description" : "시가총액(자산총액) 단위(USD)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "ETF 영문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "name_ko" : {
+            "type" : "string",
+            "description" : "ETF 국문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "origin_etf" : {
+            "type" : "string",
+            "description" : "레버지리ETF인 경우, 동일한 비교지수를 추종하는 1배 ETF의 심볼. TQQQ의 경우 동일한 지수를 추종하는 QQQ를 보여줌",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "pros_ko" : {
+            "type" : "string",
+            "description" : "해당 ETF의 장점",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "sec_type" : {
+            "type" : "string",
+            "description" : "타입",
+            "example" : "EF(ETF), EN(ETN), RT(리츠), ST(개별주식)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "selection_criteria" : {
+            "type" : "string",
+            "description" : "ETF가 추종하는 비교지수의 종목선택 기준",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "ETF 심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "week52_high" : {
+            "type" : "number",
+            "description" : "52주 최고가",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "week52_low" : {
+            "type" : "number",
+            "description" : "52주 최저가",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "weighting_criteria" : {
+            "type" : "string",
+            "description" : "ETF가 추종하는 비교지수의 종목비중 기준",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFHoldingsDto" : {
+        "title" : "ResETFHoldingsDto",
+        "type" : "object",
+        "properties" : {
+          "etf_holding" : {
+            "type" : "string",
+            "description" : "ETF 보유종목",
+            "example" : "asset : 해외주식 심볼(티커)cusip : CUSIP 정보isin : ISIN 정보market_value : ETF가 보유한 해당 종목의 시장가치. 단위(USD)name : 해당 종목의 영문이름name_ko : 해당 종목의 국문이름shares_number : ETF가 보유한 해당 종목의 시장가치. 단위(주)dates : 보유 기준일weight_percent : 해당 개발종목이 ETF에서 차지하는 비중. 단위(%)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "ETF 심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFMDDDto" : {
+        "title" : "ResETFMDDDto",
+        "type" : "object",
+        "properties" : {
+          "max" : {
+            "$ref" : "#/components/schemas/MDD",
+            "exampleSetFlag" : false
+          },
+          "second" : {
+            "$ref" : "#/components/schemas/MDD",
+            "exampleSetFlag" : false
+          },
+          "single_day" : {
+            "$ref" : "#/components/schemas/MDDSingleDay",
+            "exampleSetFlag" : false
+          },
+          "third" : {
+            "$ref" : "#/components/schemas/MDD",
+            "exampleSetFlag" : false
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFMDDInfoDto" : {
+        "title" : "ResETFMDDInfoDto",
+        "type" : "object",
+        "properties" : {
+          "info" : {
+            "$ref" : "#/components/schemas/ResETFDetailsDto",
+            "exampleSetFlag" : false
+          },
+          "mdd" : {
+            "$ref" : "#/components/schemas/ResETFMDDDto",
+            "exampleSetFlag" : false
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFOwnWeightingDto" : {
+        "title" : "ResETFOwnWeightingDto",
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "$ref" : "#/components/schemas/ResETFCountryWeightingDto",
+            "exampleSetFlag" : false
+          },
+          "sector" : {
+            "$ref" : "#/components/schemas/ResETFSectorWeightingDto",
+            "exampleSetFlag" : false
+          },
+          "stock" : {
+            "$ref" : "#/components/schemas/ResETFDetailsDto",
+            "exampleSetFlag" : false
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFSectorWeightingDto" : {
+        "title" : "ResETFSectorWeightingDto",
+        "type" : "object",
+        "properties" : {
+          "sector_weight" : {
+            "type" : "array",
+            "description" : "섹터 비중",
+            "exampleSetFlag" : false,
+            "items" : {
+              "$ref" : "#/components/schemas/SectorWeight",
+              "exampleSetFlag" : false
+            },
+            "types" : [ "array" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "ETF 심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFStatDto" : {
+        "title" : "ResETFStatDto",
+        "type" : "object",
+        "properties" : {
+          "asset_manager" : {
+            "type" : "string",
+            "description" : "해당 ETF의 운용사",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "avg_30d_volume" : {
+            "type" : "number",
+            "description" : "최근 30일 평균 거래량(영업일 단위아님). 단위(주수)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "day30_change_percent" : {
+            "type" : "number",
+            "description" : "최근 30일 가격변화율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "day5_change_percent" : {
+            "type" : "number",
+            "description" : "최근 5일 가격변화율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "eng_name" : {
+            "type" : "string",
+            "description" : "종목 영문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "etf_holding" : {
+            "type" : "string",
+            "description" : "ETF 구성종목 비중리스트",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "first_trading_date" : {
+            "type" : "string",
+            "description" : "최초거래일",
+            "format" : "date",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "holdingsCount" : {
+            "type" : "integer",
+            "description" : "구성종목수",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "kor_name" : {
+            "type" : "string",
+            "description" : "종목 한국명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "marketcap" : {
+            "type" : "number",
+            "description" : "시가총액(자산총액) 단위(USD)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "month1_change_percent" : {
+            "type" : "number",
+            "description" : "최근 1개월 가격변화율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "month3_change_percent" : {
+            "type" : "number",
+            "description" : "최근 3개월 가격변화율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "month6_change_percent" : {
+            "type" : "number",
+            "description" : "최근 6개월 가격변화율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "origin_etf" : {
+            "type" : "string",
+            "description" : "추적지수",
+            "example" : "주식만",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "종목 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "year1_change_percent" : {
+            "type" : "number",
+            "description" : "최근 1년 가격변화율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "year2_change_percent" : {
+            "type" : "number",
+            "description" : "최근 2년 가격변화율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "year5_change_percent" : {
+            "type" : "number",
+            "description" : "최근 5년 가격변화율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "ytd_change_percent" : {
+            "type" : "number",
+            "description" : "연초대비 가격변화율",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFStockDividendDto" : {
+        "title" : "ResETFStockDividendDto",
+        "type" : "object",
+        "properties" : {
+          "div_yield" : {
+            "type" : "number",
+            "description" : "배당 수익률(시가 배당률). 단위(%)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "frequency" : {
+            "type" : "integer",
+            "description" : "분배 주기 (0: 일회성, 1: 매년, 2: 매반기, 4:매분기, 12:매월",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "hasNext" : {
+            "type" : "boolean",
+            "description" : "마지막 페이지 flag",
+            "exampleSetFlag" : false,
+            "types" : [ "boolean" ]
+          },
+          "history" : {
+            "type" : "array",
+            "description" : "과거 배당내역",
+            "exampleSetFlag" : false,
+            "items" : {
+              "$ref" : "#/components/schemas/History",
+              "exampleSetFlag" : false
+            },
+            "types" : [ "array" ]
+          },
+          "payout_sum" : {
+            "type" : "number",
+            "description" : "조회시점기준 주당 배당금 합계",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "ETF 심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResETFStockExposureDto" : {
+        "title" : "ResETFStockExposureDto",
+        "type" : "object",
+        "properties" : {
+          "etf_name_ko" : {
+            "type" : "string",
+            "description" : "ETF 국문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "etf_symbol" : {
+            "type" : "string",
+            "description" : "ETF 심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "leverage_power" : {
+            "type" : "number",
+            "description" : "레버리지 상품인 경우, 레버리지 배수. 3이면 3배, 1이면 1배, -1이면 -1배 인버스, -3이면 -3배 인버스",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "market_value" : {
+            "type" : "number",
+            "description" : "평가금액 단위(USD)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "shares_number" : {
+            "type" : "number",
+            "description" : "보유주수",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "해외주식 심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "weight_percent" : {
+            "type" : "number",
+            "description" : "보유비중",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResISICDto" : {
+        "title" : "ResISICDto",
+        "type" : "object",
+        "properties" : {
+          "eng_name" : {
+            "type" : "string",
+            "description" : "종목 영문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "exchange_id" : {
+            "type" : "string",
+            "description" : "거래소ID",
+            "example" : "AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "isic" : {
+            "type" : "string",
+            "description" : "ISIC 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "isicName" : {
+            "type" : "string",
+            "description" : "ISIC 업종명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "kor_name" : {
+            "type" : "string",
+            "description" : "종목 한국명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "종목 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResISICStatDto" : {
+        "title" : "ResISICStatDto",
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string",
+            "description" : "국가코드",
+            "example" : "USA(미국), CHN(홍콩), SHA(상해), SZA(심천), SHASZA(상해+심천)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "exchange_id" : {
+            "type" : "string",
+            "description" : "거래소ID",
+            "example" : "AMX(아멕스 거래소),HKS(홍콩 거래소),NAS(나스닥 거래소),NYS(뉴욕 거래소)",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "isic" : {
+            "type" : "string",
+            "description" : "ISIC 코드",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "isic_leading_symbol" : {
+            "type" : "string",
+            "description" : "ISIC 주도주(비교기간동안 상승률이 가장높은 주식)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "isic_leading_symbol_name" : {
+            "type" : "string",
+            "description" : "ISIC 주도주(비교기간동안 상승률이 가장높은 주식) 영문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "isic_leading_symbol_name_kor" : {
+            "type" : "string",
+            "description" : "ISIC 주도주(비교기간동안 상승률이 가장높은 주식) 국문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "isic_leading_symbol_rise_ratio" : {
+            "type" : "number",
+            "description" : "비교기간 동안 주도주 상승률",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "isic_name" : {
+            "type" : "string",
+            "description" : "ISIC 업종명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "isic_rising_stock_ratio" : {
+            "type" : "number",
+            "description" : "ISIC 비교기간동안 상승종목 비율(%)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "isic_sector_index" : {
+            "type" : "number",
+            "description" : "ISIC 업종지수",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "isic_sector_index_fluctuation" : {
+            "type" : "number",
+            "description" : "ISIC 업종지수 비교기간동안 등락",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "isic_sector_index_fluctuation_rate" : {
+            "type" : "number",
+            "description" : "ISIC 업종지수 비교기간동안 등락률",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "isic_total_transaction_amount" : {
+            "type" : "number",
+            "description" : "ISIC 업종지수 비교기간동안 총 거래대금",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "period" : {
+            "type" : "string",
+            "description" : "비교기간",
+            "example" : "DAY,WEEK,MONTH1,MONTH3",
+            "exampleSetFlag" : true,
+            "types" : [ "string" ]
+          },
+          "rank" : {
+            "type" : "integer",
+            "description" : "순위",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "ResStockDividendRankDto" : {
+        "title" : "ResStockDividendRankDto",
+        "type" : "object",
+        "properties" : {
+          "dividend_yield" : {
+            "type" : "number",
+            "description" : "배당률 단위(%)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          },
+          "name_ko" : {
+            "type" : "string",
+            "description" : "ETF 국문명",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "rank" : {
+            "type" : "integer",
+            "description" : "순위",
+            "format" : "int64",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "ETF 심볼(티커)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "SectorWeight" : {
+        "title" : "SectorWeight",
+        "type" : "object",
+        "properties" : {
+          "sector" : {
+            "type" : "string",
+            "description" : "섹터(영어)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "sector_ko" : {
+            "type" : "string",
+            "description" : "섹터(국문)",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ]
+          },
+          "weight_percent" : {
+            "type" : "number",
+            "description" : "해당 섹터가 ETF에서 차지하는 비중. 단위(%)",
+            "format" : "double",
+            "exampleSetFlag" : false,
+            "types" : [ "number" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      },
+      "YearMonth" : {
+        "title" : "YearMonth",
+        "type" : "object",
+        "properties" : {
+          "leapYear" : {
+            "type" : "boolean",
+            "exampleSetFlag" : false,
+            "types" : [ "boolean" ]
+          },
+          "month" : {
+            "type" : "string",
+            "exampleSetFlag" : false,
+            "types" : [ "string" ],
+            "enum" : [ "APRIL", "AUGUST", "DECEMBER", "FEBRUARY", "JANUARY", "JULY", "JUNE", "MARCH", "MAY", "NOVEMBER", "OCTOBER", "SEPTEMBER" ]
+          },
+          "monthValue" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          },
+          "year" : {
+            "type" : "integer",
+            "format" : "int32",
+            "exampleSetFlag" : false,
+            "types" : [ "integer" ]
+          }
+        },
+        "exampleSetFlag" : false,
+        "types" : [ "object" ]
+      }
+    },
+    "extensions" : { }
+  }
+}
